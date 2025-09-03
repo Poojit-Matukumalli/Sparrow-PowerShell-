@@ -12,7 +12,7 @@ def cmd_echo(x):  # This is echo
     print(x)
 
 def cmd_cls():
-    os.system('cls' if name == 'nt' else 'clear') # This is the cls segment
+    os.system('cls' if os.name == 'nt' else 'clear') # This is the cls segment
 
 def cmd_del(file_path):                         
     try:
@@ -83,4 +83,5 @@ while True:                                             #Looks cluttered and is 
     except Exception as e:
 
         print(f"Error: \n{e}")
+
 
