@@ -9,7 +9,7 @@ Features -------------------------------------
 - 'help' -> Shows a list of commands  
 - 'echo <text>' → Print text  
 - 'cls' → Clear the screen  
-- 'del <file>' → Delete a file (with safety check for System32 🚫)  
+- 'del <file>' → Delete a file (with safety check for System32)  
 - 'New-Item <name>' → Create a new file  
 - 'time' → Show current time  
 - 'ls' → List files in the current directory  
