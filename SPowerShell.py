@@ -1,3 +1,5 @@
+import os
+from datetime import datetime
 print("Sparrow PowerShell")
 print("Copyright (C) Sparrow Corporation. All rights reserved\n") # Dont take this seriously 🙏
 print("Welcome to Sparrow Powershell\n\n")
@@ -10,16 +12,14 @@ def cmd_echo(x):  # This is echo
     print(x)
 
 def cmd_cls():
-    from os import system, name
-    system('cls' if name == 'nt' else 'clear') # This is the cls segment
+    os.system('cls' if name == 'nt' else 'clear') # This is the cls segment
 
 def cmd_del(file_path):                         
-    from os import remove, path
     try:
         if file_path == r"C:\Windows\System32":
             print("Cannot remove Critical system files")
-        elif path.exists(file_path):
-            remove(file_path)                                               # Well, This is the file deletion segment
+        elif os.path.exists(file_path):
+            os.remove(file_path)                                               # Well, This is the file deletion segment
         else:
             print(f"File '{file_path}' not found.")
     except PermissionError:
@@ -31,22 +31,18 @@ def cmd_newitem(filename):   #The file creation segment
     open(filename+".txt", "w").close()
 
 def cmd_time():     #The datetime segment
-    from datetime import datetime
     print(datetime.now())
 
 def cmd_ls():       #ls, lists subdirectories
-    from os import listdir
-    a = listdir()
+    a = os.listdir()
     for char in a:
         print(char)
 
 def cmd_pwd():      # pwd, prints the current directory
-    from os import getcwd
-    print(getcwd())
+    print(os.getcwd())
 
 def cmd_cd(path):   # cd, change directory
-    from os import chdir
-    chdir(path)
+    os.chdir(path)
 
 def cmd_gc(filename): #gc, Get-Contents
     try:
@@ -72,9 +68,8 @@ commands = {
 
 
 while True:                                             #Looks cluttered and is cluttered
-    try:
-        from os import getcwd  # For the changing directories in the PowerShell prompt
-        cwd = getcwd()    
+    try:                                         # For the changing directories in the PowerShell prompt
+        cwd = os.getcwd()    
         Input = input(f"S-PS {cwd}> ").split()  # Input
         if Input[0] in commands:                # The first token of input checking 
             if len(Input) > 1:
@@ -86,4 +81,5 @@ while True:                                             #Looks cluttered and is 
         else:
             print(f"No such command as {Input} Exists.")        # Error exception
     except Exception as e:
+
         print(f"Error: \n{e}")
