@@ -6,8 +6,21 @@ print("Welcome to Sparrow Powershell\n\n")
 
 # Please help me improve this cmd_help
 def cmd_help():
-    print("""List of Available commands :\n1. echo(x) -> outputs x\n2. cls -> Clears the terminal\n3. del x -> removes/deletes a file\n4. New-Item -> creates a file\n5. time -> Shows current time\n6. ls -> Lists the items in the subdirectory\n7. pwd -> outputs the present directory the user is in\n7. gc -> Opens the content of files in pwd""")
-
+    print("""
+Sparrow PowerShell - List of Available commands :
+          
+1. echo <text>               -> outputs x
+2. cls                       -> Clears the terminal
+3. del <file path>           -> removes/deletes a file
+4. New-Item <name>           -> creates a file named <name>.txt
+5. time                      -> Shows current time
+6. ls                        -> Lists the items in the subdirectory
+7. pwd                       -> outputs the present directory the user is in
+8. gc                        -> Opens the content of files in pwd
+9. cd <path>                 -> Changes the current directory to <path>
+10. exit                     -> exits the Sparrow PowerShell
+""")
+    
 def cmd_echo(x):  # This is echo
     print(x)
 
@@ -67,22 +80,19 @@ commands = {
 }
 
 
-while True:                                             #Looks cluttered and is cluttered
-    try:                                         # For the changing directories in the PowerShell prompt
+while True:                                                 #Looks cluttered and is cluttered
+    try:                                                    # For the changing directories in the PowerShell prompt
         cwd = os.getcwd()    
-        Input = input(f"S-PS {cwd}> ").split()  # Input
-        if Input[0] in commands:                # The first token of input checking 
+        Input = input(f"S-PS {cwd}> ").split()              # Input
+        if Input[0] in commands:                            # The first token of input checking 
             if len(Input) > 1:
-                commands[Input[0]](" ".join(Input[1:])) #If input > 1, it adds the Input[1] token in brackets beside the Input[0], Basically a function call
+                commands[Input[0]](" ".join(Input[1:]))     #If input > 1, it adds the Input[1] token in brackets beside the Input[0], Basically a function call
             else:
-                commands[Input[0]]()            # If it's not >1, it just becomes the function call.
+                commands[Input[0]]()                        # If it's not >1, it just becomes the function call.
         elif Input[0] == "exit":
             break
         else:
-            print(f"No such command as {Input} Exists.")        # Error exception
+            print(f"No such command as {Input} Exists.")    # Error exception
     except Exception as e:
 
         print(f"Error: \n{e}")
-
-
-
