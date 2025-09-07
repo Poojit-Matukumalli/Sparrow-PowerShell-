@@ -21,8 +21,8 @@ Sparrow PowerShell - List of Available commands :
 8. gc                        -> Opens the content of files in pwd
 9. cd <path>                 -> Changes the current directory to <path>
 10. calc <expr>              -> calculates an expression
-11. edit <file editor>       -> Edits the file
-12. exit                     -> exits the Sparrow PowerShell
+10. exit                     -> exits the Sparrow PowerShell
+11. edit <editor><name>      -> Edits the file
 """)
 
 def cmd_echo(x):  # This is echo
@@ -37,6 +37,7 @@ def cmd_del(file_path):
             print("Cannot remove Critical system files")
         elif os.path.exists(file_path):
             os.remove(file_path)                            # Well, This is the file deletion segment
+            print
         else:
             print(f"File '{file_path}' not found.")
     except PermissionError:
@@ -45,8 +46,16 @@ def cmd_del(file_path):
         print(f"An unexpected error occurred:\n\n{e}")
 
 def cmd_newitem(filename):   #The file creation segment
-    open(filename+".txt", "w").close()
-
+    if os.name == "nt":
+        open(f"{filename}", "w")
+        print(f"\t\t Directory: {os.getcwd()}")
+        print( "Mode           : -a----\n"
+              f"LastWriteTime  : {datetime.now()} \n"
+               "Length         : 0\n"
+              f"name           : {filename}"
+            )
+    else:
+        os.system(f"touch {filename}")
 def cmd_time():     #The datetime segment
     print(datetime.now())
 
@@ -63,15 +72,15 @@ def cmd_cd(path):   # cd, change directory
 
 def cmd_gc(filename): #gc, Get-Contents
     try:
-        with open(filename, "r", errors="ignore") as f:
+        with open(filename, "r") as f:
             print(f.read())
     except Exception as e:
         print(f"An error occurred:\n{e}")
 
 def cmd_calc(x):
     def mathexpr(s):
-        return bool(fullmatch(r"[0-9+\-*/().\s]+",s))
-    if mathexpr(x) == True:
+        return bool(fullmatch(r"[0-9+\-*/().\s]+",s))        # Checks whether the following symbols are only present.
+    if mathexpr(x) == True:                                  # If the mathexpr(x) is True, eval is activated, so its safe...
         print(eval(x))
     else:
         print("Enter a valid expression")
@@ -97,19 +106,19 @@ commands = {
 }
 
 while True:                                                 #Looks cluttered and is cluttered
-    try:                                                    # For the changing directories in the PowerShell prompt
-        cwd = os.getcwd()    
-        Input = input(f"S-PS {cwd}> ").split()
-        
+    try:                                                    
+        cwd = os.getcwd()                                   # For the changing directories in the PowerShell prompt
+        UserInput = input(f"S-PS {cwd}> ")
+        Input = UserInput.split()
         if Input[0] in commands:                            # The first token of input checking 
             if len(Input) > 1:
-                commands[Input[0]](" ".join(Input[1:]))     #If input > 1, it adds the Input[1] token in parentheses beside the Input[0], Basically a function call
-            else:                                           #input[1:] is slicing, Excludes input[0] and joins the rest to the initial function call
+                commands[Input[0]](" ".join(Input[1:]))     # If input > 1, it adds the Input[1] token in parentheses beside the Input[0], Basically a function call
+            else:                                           # input[1:] is slicing, Excludes input[0] and joins the rest to the initial function call
                 commands[Input[0]]()                        # If it's not >1, it just becomes the function call.
         elif Input[0] == "exit":
             break
         else:
-            print(f"No such command as {Input} Exists.")    # Error exception
+            print(f"No such command as {UserInput} Exists.")   # Error exception
     except Exception as e:
 
         print(f"Error: \n{e}")
