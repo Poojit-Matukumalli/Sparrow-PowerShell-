@@ -52,10 +52,16 @@ def cmd_newitem(filename):   #The file creation segment
         print( "Mode           : -a----\n"
               f"LastWriteTime  : {datetime.now()} \n"
                "Length         : 0\n"
-              f"name           : {filename}"
+              f"Name           : {filename}"
             )
     else:
         os.system(f"touch {filename}")
+        print(f"\t\t Directory: {os.getcwd()}")
+        print( "Mode           : Created (touch) "
+              f"LastWriteTime  : {datetime.now()} \n"
+               "Length         : 0\n"
+              f"Name           : {filename}"
+             )
 def cmd_time():     #The datetime segment
     print(datetime.now())
 
@@ -122,3 +128,4 @@ while True:                                                 #Looks cluttered and
     except Exception as e:
 
         print(f"Error: \n{e}")
+
