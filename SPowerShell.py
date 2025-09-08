@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 from re import fullmatch
+import json
 print("-"*100)
 print("Sparrow PowerShell")
 print("Copyright (C) Sparrow Corporation. All rights reserved\n") # Dont take this seriously 🙏
@@ -23,6 +24,8 @@ Sparrow PowerShell - List of Available commands :
 10. calc <expr>              -> calculates an expression
 10. exit                     -> exits the Sparrow PowerShell
 11. edit <editor><name>      -> Edits the file
+12. pip <pkg_name>           -> Works with all pip commands
+13. 
 """)
 
 def cmd_echo(x):  # This is echo
@@ -52,16 +55,15 @@ def cmd_newitem(filename):   #The file creation segment
         print( "Mode           : -a----\n"
               f"LastWriteTime  : {datetime.now()} \n"
                "Length         : 0\n"
-              f"Name           : {filename}"
+              f"name           : {filename}"
             )
     else:
         os.system(f"touch {filename}")
-        print(f"\t\t Directory: {os.getcwd()}")
-        print( "Mode           : Created (touch) "
+        print( "Mode           : Created (touch)\n"
               f"LastWriteTime  : {datetime.now()} \n"
                "Length         : 0\n"
-              f"Name           : {filename}"
-             )
+              f"name           : {filename}"
+            )
 def cmd_time():     #The datetime segment
     print(datetime.now())
 
@@ -85,8 +87,8 @@ def cmd_gc(filename): #gc, Get-Contents
 
 def cmd_calc(x):
     def mathexpr(s):
-        return bool(fullmatch(r"[0-9+\-*/().\s]+",s))        # Checks whether the following symbols are only present.
-    if mathexpr(x) == True:                                  # If the mathexpr(x) is True, eval is activated, so its safe...
+        return bool(fullmatch(r"[0-9+\-*/().\s]+",s))
+    if mathexpr(x) == True:
         print(eval(x))
     else:
         print("Enter a valid expression")
@@ -94,6 +96,32 @@ def cmd_calc(x):
 def cmd_edit(x):
     os.system(x)
 
+def cmd_pip(package_name):
+    os.system(f"pip {package_name}")
+
+def cmd_PkgInstall(package_name):
+    config_file = "config.json"
+    def load_config():
+        if not os.path.exists(config_file):
+            return {}
+        try:
+            with open (config_file, "r") as f:
+                return json.load(f)
+        except json.JSONDecodeError:
+            return {}
+    def save_config(config):
+        with open(config_file, "w") as f:
+            json.dump(config, f, indent=4 ) 
+    config = load_config()
+    if "package manager" not in config or not config["package manager"]:
+        pm = input("Enter your package manager and its install command\n(apt, winget, yay, paru, choco etc): ")
+        config["package manager"] = pm.strip()
+        save_config(config)
+
+        print("Using package manager: ",
+        config["package manager"])
+    os.system(f"{config['package manager']} {package_name}")
+    
 
 # List of commands
 commands = {
@@ -108,7 +136,9 @@ commands = {
     "cd" : cmd_cd,
     "gc" : cmd_gc,
     "calc" : cmd_calc,
-    "edit" : cmd_edit
+    "edit" : cmd_edit,
+    "pip" : cmd_pip,
+    "install" : cmd_PkgInstall
 }
 
 while True:                                                 #Looks cluttered and is cluttered
@@ -128,5 +158,3 @@ while True:                                                 #Looks cluttered and
     except Exception as e:
 
         print(f"Error: \n{e}")
-
-
