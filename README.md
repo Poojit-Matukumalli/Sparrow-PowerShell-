@@ -6,17 +6,12 @@ My first GitHub project, supports basic shell like commands
 
 Features -------------------------------------
 
-- 'help' -> Shows a list of commands  
-- 'echo <text>' → Print text  
-- 'cls' → Clear the screen  
-- 'del <file>' → Delete a file (with safety check for System32)  
-- 'New-Item <name>' → Create a new file  
-- 'time' → Show current time  
-- 'ls' → List files in the current directory  
-- 'pwd' → Show current working directory  
-- 'cd <path>' → Change directory  
-- 'gc <file>' → View file contents
-- And much more  
+- 'help' -> Shows a list of all available commands
+- 'pip <cmd> -> All pip commands are supported
+  
+- install <pkg> -> When using for the first time, An input menu pops up,
+- enter the package manager and its install command, asks only for the first time. 
+
 
 Run ============================================
 
