@@ -11,6 +11,8 @@ print("\nType 'help' for a list of commands")
 def cmd_help():
     print("""
 Sparrow PowerShell - List of Available commands :
+
+Any terminal command (Windows, Linux or mac) is supported by this wrapper
           
 1. echo <text>               -> outputs x
 2. cls                       -> Clears the terminal
@@ -21,11 +23,10 @@ Sparrow PowerShell - List of Available commands :
 7. pwd                       -> outputs the present directory the user is in
 8. gc                        -> Opens the content of files in pwd
 9. cd <path>                 -> Changes the current directory to <path>
-10. calc <expr>              -> calculates an expression
 10. exit                     -> exits the Sparrow PowerShell
 11. edit <editor><name>      -> Edits the file
 12. pip <pkg_name>           -> Works with all pip commands
-13. 
+13. install <pkg>            -> More update coming to this in the next commit
 """)
 
 def cmd_echo(x):  # This is echo
@@ -153,6 +154,8 @@ while True:                                                 #Looks cluttered and
                 commands[Input[0]]()                        # If it's not >1, it just becomes the function call.
         elif Input[0] == "exit":
             break
+        elif Input[0] not in commands:
+            os.system(UserInput)
         else:
             print(f"No such command as {UserInput} Exists.")   # Error exception
     except Exception as e:
