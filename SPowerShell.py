@@ -1,20 +1,29 @@
-import os
-from datetime import datetime
-from re import fullmatch
-import json
-print("-"*100)
-print("Sparrow PowerShell")
+import os ; from datetime import datetime ; from re import fullmatch ; import json    # This ';' seperates the import lines
+print(f"{'-'*100}\nSparrow PowerShell")                                               # By treating them as separate lines
 print("Copyright (C) Sparrow Corporation. All rights reserved\n") # Dont take this seriously 🙏
-print(f"Welcome to Sparrow Powershell\n")
-print("\nType 'help' for a list of commands")
+print("Welcome to Sparrow Powershell\n")
+print("\nType 'help' for a list of commands and 'exit' to exit S-PS")
+
+def cmd_echo(x):  # This is echo
+    if ">>" and ">" in x:
+        if ">>" in x:
+            op = ">>"
+        elif ">" in x:
+            op = ">"
+        before, after = x.split(op, 1)
+        message = before.rstrip()
+        filename = after.strip()
+        mode = "a" if op == ">>" else "w"
+        with open(filename, mode) as f:
+            f.write(message + "\n")
+    else:
+        print(x)
 
 def cmd_help():
     print("""
 Sparrow PowerShell - List of Available commands :
-
-Any terminal command (Windows, Linux or mac) is supported by this wrapper
           
-1. echo <text>               -> outputs x
+1. echo <text>               -> outputs x. if '>>' or '>' is used, outputs into a file in append or overwrite respectively.
 2. cls                       -> Clears the terminal
 3. del <file path>           -> removes/deletes a file
 4. New-Item <name>           -> creates a file named <name>.txt
@@ -23,15 +32,22 @@ Any terminal command (Windows, Linux or mac) is supported by this wrapper
 7. pwd                       -> outputs the present directory the user is in
 8. gc                        -> Opens the content of files in pwd
 9. cd <path>                 -> Changes the current directory to <path>
-10. exit                     -> exits the Sparrow PowerShell
+10. calc <expr>              -> calculates an expression
 11. edit <editor><name>      -> Edits the file
 12. pip <pkg_name>           -> Works with all pip commands
-13. install <pkg>            -> More update coming to this in the next commit
+13. install <pkg name>       -> Installs the requested package (For more info, run > pm-help. pm stands for package manager.)
+14. uninstall <pkg name>     -> Uninstalls the requested package (For more info, run > pm-help. pm stands for package manager.)\n\n
+                    For More info, check my github repo's COMMANDS.md folder
 """)
-
-def cmd_echo(x):  # This is echo
-    print(x)
-
+def cmd_pm_help():
+    print("\n\t\t\tPackage manager config\n\n"
+    "• When Running the 'install' or 'uninstall' command for the first time, an input prompt appears.\n\n"
+    "• In the input prompt, Enter your system's package manager and its install command\n\n"
+    "• Do the same for uninstall command.\n\n"
+    "• To edit the saved (.json) file, enter > edit notepad config.json\n\n"
+    "• When editing, avoid editing the LHS Keys for the json dict, that can cause the json to be created again\n"
+    )
+    
 def cmd_cls():
     os.system('cls' if os.name == 'nt' else 'clear') # This is the cls segment
 
@@ -100,7 +116,7 @@ def cmd_edit(x):
 def cmd_pip(package_name):
     os.system(f"pip {package_name}")
 
-def cmd_PkgInstall(package_name):
+def cmd_Install(package_name):
     config_file = "config.json"
     def load_config():
         if not os.path.exists(config_file):
@@ -114,38 +130,48 @@ def cmd_PkgInstall(package_name):
         with open(config_file, "w") as f:
             json.dump(config, f, indent=4 ) 
     config = load_config()
-    if "package manager" not in config or not config["package manager"]:
+    if "package_manager" not in config or not config["package_manager"]:
         pm = input("Enter your package manager and its install command\n(apt, winget, yay, paru, choco etc): ")
-        config["package manager"] = pm.strip()
+        config["package_manager"] = pm.strip()
         save_config(config)
 
         print("Using package manager: ",
-        config["package manager"])
-    os.system(f"{config['package manager']} {package_name}")
-    
+        config["package_manager"])
+    os.system(f"{config['package_manager']} {package_name}")
 
-# List of commands
+def cmd_Uninstall(package_name):
+    config_file = "config.json"
+    def load_config():
+        if not os.path.exists(config_file):
+            return {}
+        try:
+            with open (config_file, "r") as f:
+                return json.load(f)
+        except json.JSONDecodeError:
+            return {}
+    def save_config(config):
+        with open(config_file, "w") as f:
+            json.dump(config, f, indent=4 ) 
+    config = load_config()
+    if "pm_uninstall" not in config or not config["pm_uninstall"]:
+        pm = input("Enter your package manager and its uninstall command\n(apt, winget, yay, paru, choco etc): ")
+        config["pm_uninstall"] = pm.strip()
+        save_config(config)
+
+        print("Using package manager: ",
+        config["pm_uninstall"])
+    os.system(f"{config['pm_uninstall']} {package_name}")
+
 commands = {
-    "help" : cmd_help,
-    "echo" : cmd_echo,
-    "cls" : cmd_cls,
-    "del" : cmd_del,
-    "New-Item" : cmd_newitem,
-    "time" : cmd_time,
-    "ls" : cmd_ls,
-    "pwd" : cmd_pwd,
-    "cd" : cmd_cd,
-    "gc" : cmd_gc,
-    "calc" : cmd_calc,
-    "edit" : cmd_edit,
-    "pip" : cmd_pip,
-    "install" : cmd_PkgInstall
+    "help" : cmd_help,          "pm-help" : cmd_pm_help,        "echo" : cmd_echo,       "cls" : cmd_cls,
+    "del" : cmd_del,            "New-Item" : cmd_newitem,       "time" : cmd_time,       "ls" : cmd_ls, "pwd" : cmd_pwd,
+    "cd" : cmd_cd,              "gc" : cmd_gc,                  "calc" : cmd_calc,       "edit" : cmd_edit, "pip" : cmd_pip,
+    "install" : cmd_Install,    "uninstall" : cmd_Uninstall
 }
-
 while True:                                                 #Looks cluttered and is cluttered
     try:                                                    
         cwd = os.getcwd()                                   # For the changing directories in the PowerShell prompt
-        UserInput = input(f"S-PS {cwd}> ")
+        UserInput = input(f"S-PS {cwd}> ") 
         Input = UserInput.split()
         if Input[0] in commands:                            # The first token of input checking 
             if len(Input) > 1:
@@ -159,5 +185,4 @@ while True:                                                 #Looks cluttered and
         else:
             print(f"No such command as {UserInput} Exists.")   # Error exception
     except Exception as e:
-
         print(f"Error: \n{e}")
