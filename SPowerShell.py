@@ -37,7 +37,10 @@ Sparrow PowerShell - List of Available commands :
 12. pip <pkg_name>           -> Works with all pip commands
 13. install <pkg name>       -> Installs the requested package (For more info, run > pm-help. pm stands for package manager.)
 14. uninstall <pkg name>     -> Uninstalls the requested package (For more info, run > pm-help. pm stands for package manager.)\n\n
-                    For More info, check my github repo's COMMANDS.md folder
+                    For More info, check my github repo's COMMANDS.md folder\n
+                                            (or)
+                         cd Sparrow-PowerShell-\COMMANDS>md for Windows\n
+                            cd Sparrow-PowerShell-/COMMANDS.md for Linux
 """)
 def cmd_pm_help():
     print("\n\t\t\tPackage manager config\n\n"
@@ -186,3 +189,4 @@ while True:                                                 #Looks cluttered and
             print(f"No such command as {UserInput} Exists.")   # Error exception
     except Exception as e:
         print(f"Error: \n{e}")
+
