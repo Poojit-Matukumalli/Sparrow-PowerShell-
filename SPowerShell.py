@@ -21,27 +21,20 @@ def cmd_echo(x):  # This is echo
 
 def cmd_help():
     print("""
-Sparrow PowerShell - List of Available commands :
+Sparrow PowerShell - Help :
           
-1. echo <text>               -> outputs x. if '>>' or '>' is used, outputs into a file in append or overwrite respectively.
-2. cls                       -> Clears the terminal
-3. del <file path>           -> removes/deletes a file
-4. New-Item <name>           -> creates a file named <name>.txt
-5. time                      -> Shows current time
-6. ls                        -> Lists the items in the subdirectory
-7. pwd                       -> outputs the present directory the user is in
-8. gc                        -> Opens the content of files in pwd
-9. cd <path>                 -> Changes the current directory to <path>
-10. calc <expr>              -> calculates an expression
-11. edit <editor><name>      -> Edits the file
-12. pip <pkg_name>           -> Works with all pip commands
-13. install <pkg name>       -> Installs the requested package (For more info, run > pm-help. pm stands for package manager.)
-14. uninstall <pkg name>     -> Uninstalls the requested package (For more info, run > pm-help. pm stands for package manager.)\n\n
-                    For More info, check my github repo's COMMANDS.md folder\n
+                For More info on commands, check my github repo's COMMANDS.md folder\n
                                             (or)
-                         cd Sparrow-PowerShell-\COMMANDS>md for Windows\n
-                            cd Sparrow-PowerShell-/COMMANDS.md for Linux
+                 cd Sparrow-PowerShell- for Windows and type *edit COMMANDS.md code*\n
+                  cd Sparrow-PowerShell- for Linux and type *edit COMMANDS.md code*
 """)
+    cwd = os.getcwd()                                   
+    open_file_choice = input(f"S-PS {cwd}> y/n: ")
+    if open_file_choice == "y":
+        text_editor = input(f"S-PS {cwd}> Enter the name of the Text editor you want to use: ")
+        os.system(f"{text_editor} COMMANDS.md")
+    elif open_file_choice == "n":
+        pass
 def cmd_pm_help():
     print("\n\t\t\tPackage manager config\n\n"
     "• When Running the 'install' or 'uninstall' command for the first time, an input prompt appears.\n\n"
@@ -171,22 +164,36 @@ commands = {
     "cd" : cmd_cd,              "gc" : cmd_gc,                  "calc" : cmd_calc,       "edit" : cmd_edit, "pip" : cmd_pip,
     "install" : cmd_Install,    "uninstall" : cmd_Uninstall
 }
-while True:                                                 #Looks cluttered and is cluttered
+while True:                                                 
     try:                                                    
-        cwd = os.getcwd()                                   # For the changing directories in the PowerShell prompt
+        cwd = os.getcwd()                                   
         UserInput = input(f"S-PS {cwd}> ") 
         Input = UserInput.split()
-        if Input[0] in commands:                            # The first token of input checking 
-            if len(Input) > 1:
-                commands[Input[0]](" ".join(Input[1:]))     # If input > 1, it adds the Input[1] token in parentheses beside the Input[0], Basically a function call
-            else:                                           # input[1:] is slicing, Excludes input[0] and joins the rest to the initial function call
-                commands[Input[0]]()                        # If it's not >1, it just becomes the function call.
-        elif Input[0] == "exit":
-            break
-        elif Input[0] not in commands:
-            os.system(UserInput)
-        else:
-            print(f"No such command as {UserInput} Exists.")   # Error exception
+        if "&&" in UserInput:
+            no_of_commands = UserInput.split('&&')                 # Glorified thing doing the same thing
+            for cmd in no_of_commands:                             # That the one below does, but one by one
+                tokens = cmd.strip().split()
+                if tokens[0] in commands:                             
+                    if len(tokens) > 1:
+                        commands[tokens[0]](" ".join(tokens[1:]))     
+                    else:                                           
+                        commands[tokens[0]]()                        
+                elif tokens[0] == "exit":
+                    break
+                elif tokens[0] not in commands:
+                    os.system(UserInput) 
+
+        elif "&&" not in UserInput:
+            if Input[0] in commands:                            # The first token of input checking 
+                if len(Input) > 1:
+                    commands[Input[0]](" ".join(Input[1:]))     # If input > 1, it adds the Input[1] token in parentheses beside the Input[0], Basically a function call
+                else:                                           # input[1:] is slicing, Excludes input[0] and joins the rest to the initial function call
+                    commands[Input[0]]()                        # If it's not >1, it just becomes the function call.
+            elif Input[0] == "exit":
+                break
+            elif Input[0] not in commands:
+                os.system(UserInput)
+            else:
+                print(f"No such command as {UserInput} Exists.")   # Error exception
     except Exception as e:
         print(f"Error: \n{e}")
-
