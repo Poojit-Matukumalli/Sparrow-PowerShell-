@@ -25,8 +25,8 @@ Sparrow PowerShell - Help :
           
                 For More info on commands, check my github repo's COMMANDS.md folder\n
                                             (or)
-                 cd Sparrow-PowerShell- for Windows and type *edit COMMANDS.md code*\n
-                  cd Sparrow-PowerShell- for Linux and type *edit COMMANDS.md code*
+                 cd Sparrow-PowerShell- for Windows and type *edit code COMMANDS.md*\n
+                  cd Sparrow-PowerShell- for Linux and type *edit code COMMANDS.md *
 """)
     cwd = os.getcwd()                                   
     open_file_choice = input(f"S-PS {cwd}> y/n: ")
@@ -197,3 +197,4 @@ while True:
                 print(f"No such command as {UserInput} Exists.")   # Error exception
     except Exception as e:
         print(f"Error: \n{e}")
+
