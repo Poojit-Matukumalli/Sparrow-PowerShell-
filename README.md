@@ -23,6 +23,6 @@ Run ============================================
    cd Sparrow-PowerShell-
 3. Run with Python 3:
    ```Terminal
-   python SPowerShell.py
+   python -u SPowerShell.py
 
 Thank You :)
