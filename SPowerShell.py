@@ -1,6 +1,6 @@
 import os ; from datetime import datetime ; from re import fullmatch ; import json    # This ';' seperates the import lines
 print(f"{'-'*100}\nSparrow PowerShell")                                               # By treating them as separate lines
-print("Copyright (C) Sparrow Corporation. All rights reserved\n") # Dont take this seriously 🙏
+print("Copyright (C) Sparrow Corporation. All rights reserved (not real)\n") # Dont take this seriously 🙏
 print("Welcome to Sparrow Powershell\n")
 print("\nType 'help' for a list of commands and 'exit' to exit S-PS")
 
