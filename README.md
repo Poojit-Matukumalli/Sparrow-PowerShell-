@@ -25,4 +25,4 @@ Run ============================================
    ```Terminal
    python SPowerShell.py
 
-Thank You
+Thank You :)

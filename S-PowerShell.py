@@ -25,10 +25,20 @@ def cmd_pm_help():
           
     • When Running the 'install' or 'uninstall' command for the first time, an input prompt appears.
           
-    • In the input prompt, Enter your system's package manager and its install command
+    • In the input prompt, Enter your system's package manager and its install command.
           
     • Do the same for uninstall command.
           
+    -------------------------------------------------------------------------------------------------
+                                    <----    Example    ---->
+           
+    • For winget, type 'winget install' for install cmd in the input prompt
+          
+    • For running the uninstall cmd, type 'winget uninstall' in the input prompt
+          
+    • Google the install and uninstall command if you don't remember. Thank you...
+    -------------------------------------------------------------------------------------------------
+                
     • To edit the saved (.json) file, enter > edit notepad config.json
           
     • When editing, avoid editing the Left Hand Side Keys for the json dict, that can cause the json to be created again
@@ -194,14 +204,14 @@ commands = {
 }
 while True:                                                 
     try:                                                    
-        cwd = os.getcwd()                                   
-        UserInput = input(f"\nS-PS {cwd}> ") 
+        cwd = os.getcwd()                                   # Checks for && seperator and splits UserInput
+        UserInput = input(f"\nS-PS {cwd}> ")                # The split list is then iterated and functions are called
         Input = UserInput.split()
         if "&&" in UserInput:
-            no_of_commands = UserInput.split('&&')                 # Glorified thing doing the same thing
-            for cmd in no_of_commands:                             # That the one below does, but one by one
-                tokens = cmd.strip().split()
-                if tokens[0] in commands:                             
+            no_of_commands = UserInput.split('&&')              
+            for cmd in no_of_commands:                             # Here, tokens are the individual split commands
+                tokens = cmd.strip().split()                       # Which are then called (tokens, as in individual characters like keywords etc)
+                if tokens[0] in commands:                          # But here, tokens are the individual commands split from cmd 
                     if len(tokens) > 1:
                         commands[tokens[0]](" ".join(tokens[1:]))     
                     else:                                           
