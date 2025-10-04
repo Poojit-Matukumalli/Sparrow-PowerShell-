@@ -1,6 +1,18 @@
-# Sparrow PowerShell - Syntax for the commands
+# Welcome to SYNTAX.md
 This file shows the syntax for the commands (only the ones in COMMANDS.md)
-Use VScode search tool for better navigation...
+
+# Use VScode search tool for better navigation...
+
+# New Feature-
+
+To chain commands, type first command, seperate it using && and type second command. 
+
+Example :
+
+1. cd <path> && ls
+2. New-Item example.txt && echo hello > example.txt
+
+# Sparrow PowerShell - Syntax for the commands
 
 1. `echo`  1. echo <text>
            2. echo (text) > (filename) #for overwriting file contents ('> or >>' pipes text into the file)
