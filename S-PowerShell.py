@@ -175,7 +175,7 @@ def cmd_ping(x):
         ongoing.wait()
     except KeyboardInterrupt:
         ongoing.send_signal(signal.SIGINT)
-        ongoing.wait
+        ongoing.wait()
 
 def cmd_help():
     print("""
