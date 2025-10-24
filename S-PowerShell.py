@@ -6,7 +6,7 @@ print("Welcome to Sparrow Powershell\n")
 print("\nType 'help' for a list of commands and 'exit' to exit S-PS")
 
 def cmd_echo(x):  # This is echo
-    if ">>" or ">" in x:
+    if ">>" in x or ">" in x:
         if ">>" in x:
             op = ">>"
         elif ">" in x:
