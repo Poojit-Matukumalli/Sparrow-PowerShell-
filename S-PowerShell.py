@@ -235,3 +235,5 @@ while True:
                 print(f"No such command as {UserInput} Exists.")   # Error exception
     except Exception as e:
         print(f"Error: \n{e}")
+    except KeyboardInterrupt:
+        print("Type 'exit' to exit")
